@@ -1,4 +1,4 @@
-# pi-api-calculator
+# Pi Api Calculator
 [Test task] Simple celery app for calculating pi with an API
 
 ## Start
