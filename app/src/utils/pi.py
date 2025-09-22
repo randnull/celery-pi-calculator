@@ -12,7 +12,6 @@ def sign(i):
 
 def get_pi(n: int, update_trigger: Callable) -> str:
     getcontext().prec = n + 10
-    print('here')
 
     A = Decimal(1)
     b_cur = Decimal(1) / (Decimal(2).sqrt())
