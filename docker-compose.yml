@@ -1,0 +1,31 @@
+version: "3.0"
+
+services:
+  redis:
+    image: redis:8-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  pi_app:
+    build: .
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      - PI_HOST=0.0.0.0
+      - PI_PORT=8080
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  worker:
+    build: .
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+    command: celery -A app.src.celery_jobs.celery_object worker -Q pi
+    restart: unless-stopped
